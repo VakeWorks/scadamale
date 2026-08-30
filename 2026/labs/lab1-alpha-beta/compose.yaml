@@ -1,0 +1,19 @@
+#
+# Lab 1 -- two containers on one bridge network: a server and a client
+# measuring alpha (per-message) and beta (per-byte) between them.
+# run-lab.sh drives this; manual use:
+#   docker compose up --abort-on-container-exit
+services:
+  server:
+    image: vakeworks/scadamale-lab:0.1.0
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    volumes: [".:/lab"]
+    working_dir: /lab
+    command: python3 measure.py --serve
+  client:
+    image: vakeworks/scadamale-lab:0.1.0
+    user: "${LAB_UID:-1000}:${LAB_GID:-1000}"
+    volumes: [".:/lab"]
+    working_dir: /lab
+    depends_on: [server]
+    command: python3 measure.py --client server

@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 VakeWorks AB
+#
+# Build the course lab image locally (instructors / offline students):
+#   docker compose build
+# Students normally just pull instead:
+#   docker pull vakeworks/scadamale-lab:0.1.0
+services:
+  scadamale-lab:
+    image: vakeworks/scadamale-lab:0.1.0
+    build: .
