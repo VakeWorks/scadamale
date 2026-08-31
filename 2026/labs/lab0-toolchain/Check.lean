@@ -8,4 +8,6 @@
 
 theorem one_plus_one : 1 + 1 = 2 := rfl
 
-#eval "lab0: the kernel accepted one_plus_one -- toolchain OK"
+-- (No print statement here on purpose: whether the kernel ACCEPTED this file is
+-- decided by whether it elaborates at all -- run-lab.sh reports that. A print would
+-- run even when the theorem above is FALSE, which would be misleading.)
