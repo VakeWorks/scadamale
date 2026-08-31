@@ -8,12 +8,38 @@
 set -eu
 HERE="$(cd "$(dirname "$0")" && pwd)"
 cd "$HERE"
+
+# --- RECEIPT INTEGRITY GATE (op 2026-08-31): a lab receipt MUST be bound to a git commit. -----
+# No receipt is written off an uncommitted tree -- you commit your lab work FIRST, and the
+# receipt records the exact commit + branch + remote so your Canvas submission is reproducible
+# and cannot be back-dated or faked. This is the same "commit before you certify" rule the
+# course tooling uses everywhere. (Untracked files such as the receipts/ output are fine; only
+# uncommitted changes to TRACKED files block you.)
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "ERROR: this lab is not inside a git repository." >&2
+  echo "  Commit your work first, e.g.:  git init && git add -A && git commit -m 'lab0'" >&2
+  echo "  (or run inside your cloned/forked course repo). No receipt written." >&2
+  exit 2
+fi
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  echo "ERROR: you have uncommitted changes -- a lab receipt must be bound to a committed state." >&2
+  echo "  git add -A && git commit -m 'lab0 work'    then re-run this script." >&2
+  git status --short >&2
+  echo "No receipt written." >&2
+  exit 2
+fi
+GIT_COMMIT="$(git rev-parse HEAD)"
+GIT_BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo detached)"
+GIT_REMOTE="$(git config --get remote.origin.url 2>/dev/null || echo no-remote)"
+
 mkdir -p receipts
 STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 RECEIPT="receipts/receipt-lab0-$STAMP.txt"
 LOG="receipts/run-lab0-$STAMP.log"
 LAB_IMAGE="vakeworks/scadamale-lab:0.1.0"
-PROOF_IMAGE="vakeworks/iasprovedog:lean-v4.32.0"
+# Public multi-arch proof-checker (clean core-only Lean 4; amd64+arm64, no qemu). This is the
+# projected value of pinUni images.lean-checker.ref -- NEVER the internal build image.
+PROOF_IMAGE="vakeworks/lean-checker:v4.32.0"
 
 {
   echo "== toolchain versions =="
@@ -31,7 +57,7 @@ PROOF_IMAGE="vakeworks/iasprovedog:lean-v4.32.0"
   echo "== proof-checker kernel: the smallest theorem =="
   # Gate the MEASURED line on lean's REAL exit: a brace-group returns its LAST
   # command's status, so an unconditional trailing echo would mask a kernel
-  # rejection. The trailing `false` on the reject
+  # rejection (Anu student-run 2026-08-28). The trailing `false` on the reject
   # branch forces the group nonzero so the `|| { ... exit 1; }` guard fires and
   # NO passing receipt is written.
   if docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$HERE:/lab" -w /lab "$PROOF_IMAGE" lean Check.lean; then
@@ -45,6 +71,9 @@ PROOF_IMAGE="vakeworks/iasprovedog:lean-v4.32.0"
 {
   echo "ScaDaMaLe Lab 0 receipt -- toolchain + proof-checker"
   echo "generated_utc: $STAMP"
+  echo "git_commit: $GIT_COMMIT"
+  echo "git_branch: $GIT_BRANCH"
+  echo "git_remote: $GIT_REMOTE"
   echo "---- run log ----"
   cat "$LOG"
 } > "$RECEIPT"
