@@ -19,14 +19,34 @@ content: the deliverable is a *working toolchain*, receipted.
 
    It pulls both course images, smoke-tests the lab image, and asks the
    Lean proof-checker to accept the one-line theorem in `Check.lean`
-   (`1 + 1 = 2`). It writes `receipts/receipt-lab0-<timestamp>.txt` —
-   upload that file.
+   (`1 + 1 = 2`). It writes `receipts/receipt-lab0-<timestamp>.txt` (the
+   file you upload) plus a `receipts/run-lab0-<timestamp>.log` (the raw run
+   output, kept for debugging — you do *not* upload the log).
+
+   **Receipts are bound to a git commit.** The script refuses to write a
+   receipt while you have uncommitted changes, so that the receipt you
+   submit corresponds to an exact, reproducible commit of your work. A
+   fresh clone is already committed, so the first run just works. Whenever
+   you change a file, commit it before re-running (see the next section).
 
 ## The one idea worth taking away
 
-Open `Check.lean`, change the `2` to a `3`, rerun `bash run-lab.sh`, and
-watch it FAIL. A checker that cannot say *no* certifies nothing (book
-unit U0P). Change it back, rerun, upload the passing receipt.
+A checker that cannot say *no* certifies nothing (book unit U0P). See it
+for yourself — committing before each run, since receipts are bound to a
+commit:
+
+1. Open `Check.lean`, change the `2` to a `3`, and commit the change:
+
+       git add Check.lean
+       git commit -m "break: 1+1=3"
+
+2. Rerun `bash run-lab.sh` and watch the proof-checker **REJECT** it. No
+   receipt is written for a broken proof — that rejection is the point.
+3. Change it back to `2`, commit, and rerun to get your passing receipt:
+
+       git add Check.lean
+       git commit -m "restore: 1+1=2"
+       bash run-lab.sh
 
 ## Submit
 
@@ -40,5 +60,6 @@ same for every lab — is **[How to submit](../README.md#how-to-submit)**.
   (link in `../README.md`), log out and in again.
 - Corporate laptop blocks Docker Desktop → ask in the course discussion
   NOW, not on 13 September; there is a fallback path.
-- The proof-checker image is a few GB — first pull takes a while on slow
-  networks; it is cached afterwards.
+- The images are large — the lab image is ~1.2 GB and the proof-checker
+  image (`vakeworks/lean-checker`) is bigger; the first pull can take a
+  while on slow networks. Both are cached after the first run.
