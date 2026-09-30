@@ -16,7 +16,6 @@ RECEIPT="$HERE/receipts/receipt-lab2-$STAMP.txt"
 LOG="$HERE/receipts/run-lab2-$STAMP.log"
 
 docker run --rm -m 3g \
-  --user "$(id -u):$(id -g)" \
   -e HOME=/tmp -e HADOOP_USER_NAME=student -e USER=student \
   -v "$HERE:/lab" -w /lab "$IMAGE" \
   python3 sample_sort.py "$N" "$P" > "$LOG" 2>&1 || { tail -20 "$LOG"; exit 1; }
