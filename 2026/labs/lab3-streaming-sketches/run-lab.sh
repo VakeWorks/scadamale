@@ -30,7 +30,7 @@ tar -C "$HERE" -cf - streaming_sketches.py countmin_library.scala \
       -e HOME=/tmp -e HADOOP_USER_NAME=student -e USER=student \
       "$IMAGE" sh -c "mkdir -p /tmp/lab && cd /tmp/lab \
         && tar --no-same-owner --warning=no-unknown-keyword -xf - \
-        && python3 streaming_sketches.py $N $P \
+        && python3 -u streaming_sketches.py $N $P \
         && spark-shell --master 'local[*]' --driver-memory 2g --conf spark.jars.ivy=/tmp/.ivy2 \
              --conf spark.ui.showConsoleProgress=false -i countmin_library.scala" \
       > "$LOG" 2>&1 \

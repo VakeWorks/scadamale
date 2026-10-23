@@ -19,6 +19,8 @@ Open a terminal in this folder (`cd lab3-streaming-sketches/`), then:
     docker pull vakeworks/scadamale-lab:0.1.2
     bash run-lab.sh
 
+While it runs, `tail -f receipts/run-lab3-*.log` shows its progress.
+
 It takes a few minutes. It writes `receipts/receipt-lab3-<timestamp>.txt`
 (upload that `.txt`, not the `.log` next to it). Before you upload, read the
 numbers below in your receipt: each one is a claim of the book, measured on
