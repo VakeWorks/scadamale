@@ -23,7 +23,7 @@ tar -C "$HERE" -cf - distributed_sgd.py \
       -e HOME=/tmp -e HADOOP_USER_NAME=student -e USER=student \
       "$IMAGE" sh -c "mkdir -p /tmp/lab && cd /tmp/lab \
         && tar --no-same-owner --warning=no-unknown-keyword -xf - \
-        && python3 distributed_sgd.py" \
+        && python3 -u distributed_sgd.py" \
       > "$LOG" 2>&1 \
   || { tail -20 "$LOG"; exit 1; }
 

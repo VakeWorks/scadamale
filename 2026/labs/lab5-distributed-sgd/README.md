@@ -19,6 +19,8 @@ Open a terminal in this folder (`cd lab5-distributed-sgd/`), then:
     docker pull vakeworks/scadamale-lab:0.1.2
     bash run-lab.sh
 
+While it runs, `tail -f receipts/run-lab5-*.log` shows its progress.
+
 It takes about a minute or two. It writes `receipts/receipt-lab5-<timestamp>.txt`
 (upload that `.txt`, not the `.log` next to it). The numbers are the same on
 every machine (everything is seeded); only the `seconds` differ.
