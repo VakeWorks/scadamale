@@ -42,7 +42,7 @@ blocks in a second shuffle (U6 §4.4). For each block size the
 - `shuffle_written_MB` — the bytes Spark wrote to shuffle, from its own task
   metrics, and `matrix_copies_moved` — the same bytes divided by the size of
   one matrix;
-- `stages` and `seconds`. The 6 stages are two small planning jobs inside
+- `stages` and `seconds`. For the default run `stages` is 6: two small planning jobs inside
   `multiply`, three shuffle stages (the blocks of A, the blocks of B, the
   partial blocks of C) and the final result stage. The `seconds` vary from run
   to run (an untimed warm-up product runs first, but a laptop is a noisy clock);
@@ -122,8 +122,8 @@ course page, and answer two questions in the **comment box** of the upload page
 (do not edit the receipt: its hash would no longer match), one or two
 sentences each:
 
-1. **Block sizes 128 and 256 move the same number of matrix copies (17.0, to
-   within 0.1%), while 512 and 1024 move fewer. Why? Derive the number of
+1. **Block sizes 128 and 256 move the same number of matrix copies (about 17:
+   17.03 and 17.02), while 512 and 1024 move fewer. Why? Derive the number of
    copies from `partitions`.** (Hint: the 2D layout of U6 §4.1.)
 2. **Why does the join's shuffle grow so much faster with the density than
    the number of non-zeros does, while the blocks' shuffle does not?** (Hint:
