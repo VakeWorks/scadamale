@@ -78,7 +78,7 @@ errors in 2026).
 | Lab 3 — streaming sketches | `lab3-streaming-sketches/` | Mon 12 Oct | **Mon 30 Nov**\* |
 | Lab 4 — blocked matrix multiplication (Scala) | `lab4-blocked-matmul/` | Mon 19 Oct | **Mon 30 Nov**\* |
 | Lab 5 — distributed SGD and parameter averaging | `lab5-distributed-sgd/` | Mon 26 Oct | **Mon 30 Nov**\* |
-| Lab 6 — PageRank two ways (Python + Scala) | *(published shortly)* | Mon 2 Nov | **Mon 30 Nov**\* |
+| Lab 6 — PageRank two ways (Python + Scala) | `lab6-pagerank-two-ways/` | Mon 2 Nov | **Mon 30 Nov**\* |
 | Lab 7 — serve a small model | *(published after Module 2)* | Mon 9 Nov | **Mon 30 Nov**\* |
 
 Each folder has its own `README.md` (the steps) and a `run-lab.sh` (runs
@@ -132,7 +132,9 @@ upload the receipt* differs.
 - Docker Desktop must be *running* (whale icon) before any `docker` command.
 - On an 8 GB laptop close heavy applications first; every lab is sized to
   run inside 2–3 GB of container memory. In Docker Desktop, give Docker at
-  least 4 GB (Settings → Resources).
+  least 4 GB (Settings → Resources). On Windows with WSL 2 there is no such
+  slider: WSL's memory limit (`memory=` in `%UserProfile%\.wslconfig`)
+  applies, and its default, half your RAM, is usually enough.
 - On Windows, clone and run the labs **inside the Ubuntu (WSL2) terminal**,
   not in a Windows folder: a checkout made by Windows git can turn the
   scripts' line endings into `\r\n`, and bash then fails with
