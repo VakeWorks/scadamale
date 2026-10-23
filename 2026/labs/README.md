@@ -1,3 +1,4 @@
+
 # ScaDaMaLe labs
 
 Every lab runs in Docker on your own laptop (8 GB RAM is enough), produces a
@@ -46,26 +47,39 @@ Verify your install (any machine, in your terminal):
     docker --version
     docker run --rm hello-world
 
-Both course images are published multi-architecture: the same `docker pull`
+The course images are published multi-architecture: the same `docker pull`
 works on Intel/AMD (`amd64`) and on Apple-Silicon/ARM (`arm64`) machines —
-you never pick an architecture by hand.
+you never pick an architecture by hand. This holds for the proof-checker
+image and, from Lab 3 on, for the Spark lab image
+`vakeworks/scadamale-lab:0.1.2` (Python and Scala). Labs 0–2 used the
+earlier `0.1.0`, which was published for Intel/AMD only, so Apple-Silicon
+Macs ran it under emulation.
 
 ## The labs (Period 1)
 
 Labs 0–2 have an *ideally-due* paced date — the recommended rhythm, so you
 arrive at Module 1 (29–30 Sep) with a working toolchain — and ONE shared
-**hard deadline: Monday 6 October, 23:59 Stockholm** (the week after
+**hard deadline: Tuesday 6 October, 23:59 Stockholm** (the week after
 Module 1, where the lab-lectures include hands-on setup help; a setup
-struggle never costs you a late submission). From Lab 3 onward the Monday
-date is the deadline. The authoritative schedule is the course page's
-Learning Management Table.
+struggle never costs you a late submission). Labs 3–7 keep their Monday
+dates as *recommended* dates and share ONE hard deadline, **Monday 30
+November**\*; each lab appears in this folder (and in the table below) when
+it is published. The authoritative schedule is the course page's Learning
+Management Table.
+
+\* Only 5 of the 8 labs (Labs 0–7) need to be submitted to pass the course (due to API
+errors in 2026).
 
 | Lab | Folder | Ideally due | Hard deadline |
 |---|---|---|---|
-| Lab 0 — toolchain + proof-checker | `lab0-toolchain/` | Mon 14 Sep | **Mon 6 Oct** |
-| Lab 1 — ping-pong + tree vs ring allreduce | `lab1-alpha-beta/` | Mon 21 Sep | **Mon 6 Oct** |
-| Lab 2 — sample sort on Spark | `lab2-sample-sort-spark/` | Mon 28 Sep | **Mon 6 Oct** |
-| Lab 3 — streaming sketches | *(published early October)* | — | Mon 12 Oct |
+| Lab 0 — toolchain + proof-checker | `lab0-toolchain/` | Mon 14 Sep | **Tue 6 Oct** |
+| Lab 1 — ping-pong + tree vs ring allreduce | `lab1-alpha-beta/` | Mon 21 Sep | **Tue 6 Oct** |
+| Lab 2 — sample sort on Spark | `lab2-sample-sort-spark/` | Mon 28 Sep | **Tue 6 Oct** |
+| Lab 3 — streaming sketches | `lab3-streaming-sketches/` | Mon 12 Oct | **Mon 30 Nov**\* |
+| Lab 4 — blocked matrix multiplication (Scala) | `lab4-blocked-matmul/` | Mon 19 Oct | **Mon 30 Nov**\* |
+| Lab 5 — distributed SGD and parameter averaging | `lab5-distributed-sgd/` | Mon 26 Oct | **Mon 30 Nov**\* |
+| Lab 6 — PageRank two ways (Python + Scala) | *(published shortly)* | Mon 2 Nov | **Mon 30 Nov**\* |
+| Lab 7 — serve a small model | *(published after Module 2)* | Mon 9 Nov | **Mon 30 Nov**\* |
 
 Each folder has its own `README.md` (the steps) and a `run-lab.sh` (runs
 everything and writes `receipts/receipt-<lab>-<timestamp>.txt`). Read the
@@ -88,10 +102,13 @@ hash-chain is the course's own provenance mechanism (chapter F.E1b + the
 sigma-log lab) applied to *your own work*: the chain proves the order and
 integrity of your runs without any server.
 
-**2. Submit a lab = upload that receipt file** on your course page. Nothing
+**2. Submit a lab = upload that receipt file** (the `.txt`; the `.log` next to
+it is the full run log, for you) on your course page. Nothing
 is graded by style — the receipt (measured numbers + hash) is the
 submission. Some labs also ask for one or two sentences of comment; the
-README for that lab says so, and you put them in the submission text.
+README for that lab says so, and you type them in the **comment box** of the
+upload page (Canvas shows one under the file). Never edit the receipt itself:
+its SHA-256 line would no longer match.
 
 **3. Submit a quiz = answer that week's quiz** on your course page. Each
 week has a short quiz (a couple of questions) tied to the reading; it makes
@@ -114,7 +131,12 @@ upload the receipt* differs.
 
 - Docker Desktop must be *running* (whale icon) before any `docker` command.
 - On an 8 GB laptop close heavy applications first; every lab is sized to
-  run inside ~2 GB of container memory.
+  run inside 2–3 GB of container memory. In Docker Desktop, give Docker at
+  least 4 GB (Settings → Resources).
+- On Windows, clone and run the labs **inside the Ubuntu (WSL2) terminal**,
+  not in a Windows folder: a checkout made by Windows git can turn the
+  scripts' line endings into `\r\n`, and bash then fails with
+  `$'\r': command not found`.
 - If a pull is slow, that is normal the first time (the lab image is about
   1.2 GB; the proof-checker image is larger) — it is cached afterwards.
 - Stuck? Ask in the course discussion early; include the last ~20 lines of

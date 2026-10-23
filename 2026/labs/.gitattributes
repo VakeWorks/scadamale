@@ -1,0 +1,5 @@
+# Lab scripts run under bash in Linux containers and in WSL2: always check them out with LF
+# line endings, even from a Windows git (a CRLF run-lab.sh fails with $'\r': command not found).
+*.sh    text eol=lf
+*.py    text eol=lf
+*.scala text eol=lf
